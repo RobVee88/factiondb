@@ -1,4 +1,4 @@
-require 'pry'
+# require 'pry'
 require 'active_record'
 require 'mtg_sdk'
 require 'pg'
@@ -7,5 +7,3 @@ require_relative 'models/card'
 require_relative 'models/user'
 require_relative 'models/trade'
 
-
-binding.pry
