@@ -1,0 +1,23 @@
+<div class="list-container">
+    <div></div>
+    <h1>All trades</h1>
+    <div></div>
+    <div></div>
+    <div></div>
+    <%if @trades[0] != nil%>
+        <div class="card-list">
+        <%@trades.each do |trade|%>
+            <div class="card-all-trade <%=trade[:image_url]%> image-trigger">
+                <p class="card-name">From: <%=trade[:user_name_lender]%></p>
+                <p>To: <%=trade[:user_name_borrower]%></p>
+                <p><%=trade[:card_name]%>(<%=trade[:edition]%>)</p>
+                <p>Quantity: <%=trade[:amount]%></p>
+                <p>Status: <%=trade[:status]%></p>
+            </div> 
+        <%end%>
+        </div>
+    <%end%>
+    <img src="" alt="" class="cardimage">
+    <div></div>
+</div>
+<script src="/js/imageHover.js"></script>

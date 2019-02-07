@@ -1,0 +1,70 @@
+
+<%if @already_in_db == true%>
+    <h2>Error: Card is already in your collection!</h2>
+<%end%>
+<%if @card_in_trade == true%>
+    <h2>Error: Cannot delete a card that is currently part of a trade!</h2>
+<%end%>
+<div class="list-container">
+    <div></div>
+    <h1><%=@user_name%>'s collection</h1>
+    <div></div>
+    <div></div>
+    <div>
+        <%if @user_id == current_user.id%>
+            <form action="/search">
+                <button>add card to collection</button>
+            </form>
+        <%end%>    
+    </div>
+    <div class="card-list">
+        <%@cards.each do |card|%>
+            <div class="card <%=card.image_url%> image-trigger">
+                <p class="card-name"><%=card.name%>(<%=card.edition%>)</p>
+                <p class="card-name">Quantity: <%=card.amount%></p>
+                <%if @user_id == current_user.id %>
+                    <div class="collection-forms">
+                        <form action="/card/<%=card.id%>" method="post">
+                            <input type="hidden" name="_method" value="delete">
+                            <button>Delete</button>
+                        </form>
+                        <form action="/card/<%=card.id%>/edit" method="post">
+                            <input type="hidden" name="_method" value="put">
+                                <button>Update quantity</button>
+                            <select name="quantity">
+                                <%counter = 0%>
+                                <%10.times do%>
+                                    <%counter += 1%>
+                                    <%if card.amount == counter%>
+                                        <option selected value="<%=counter%>"><%=counter%></option>
+                                    <%else%>
+                                        <option value="<%=counter%>"><%=counter%></option>
+                                    <%end%>
+                                <%end%>
+                            </select>
+                        </form>
+                    </div>
+                <%else%>
+                    <%if card.amount > 0%>
+                        <form action="/trades" method="post">
+                            <input type="hidden" name="card_id" value="<%=card.id%>">
+                            <input type="hidden" name="user_id_owner" value="<%=card.user_id%>">
+                            <button>I want to borrow this card</button>
+                            <select name="borrowquantity">
+                                <%counter = 0%>
+                                <%card.amount.times do%>
+                                    <%counter = counter + 1%>
+                                    <option value="<%=counter%>"><%=counter%></option>>
+                                <%end%>
+                            </select> 
+                        </form>
+                    <%end%>
+                <%end%>
+            </div>
+        <%end%>
+    </div>
+    <img src="" alt="" class="cardimage">
+    <div></div>
+</div>
+<script src="/js/imageHover.js"></script>
+

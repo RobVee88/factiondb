@@ -1,0 +1,26 @@
+<h2>WELCOME TO THE FACTION CARD DATABASE.</h2>
+<div class="intro-wrapper">
+    <p class="intro">The Faction is a Melbourne based MTG team specialising in good spirited competitive play and magic based community activities.
+    We are also not made of money, so we like to borrow cards from each other whenever we can!</p>
+</div>
+<div class="slide-show"> 
+    <img class="my-slides" src="/IMG/faction1.jpg">
+    <img class="my-slides" src="/IMG/faction2.jpg">
+    <img class="my-slides" src="/IMG/faction3.jpg">
+    <img class="my-slides" src="/IMG/faction4.jpg">
+    <img class="my-slides" src="/IMG/faction5.jpg">
+    <img class="my-slides" src="/IMG/faction6.jpg">
+    <img class="my-slides" src="/IMG/faction7.jpg">
+    <img class="my-slides" src="/IMG/faction8.jpg">
+    <img class="my-slides" src="/IMG/faction9.jpg">
+    <img class="my-slides" src="/IMG/faction10.jpg">
+</div>
+<div class="welcome-screen-button">
+    <%if !logged_in?%>
+        <form action="/session/new">
+            <button class="login-button">ENTER</button>
+        </form>
+    <%end%>
+</div>
+
+<script src="/js/slideShow.js"></script>

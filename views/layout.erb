@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Faction Cards DB</title>
+    <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/reset.css">
+    <link rel="stylesheet" href="/stylesheets/main.css">
+</head>
+<body>
+    <div class="background">
+        <img src="/IMG/FactionLogo.jpg" alt="">
+    </div>
+        <div class="z-index-main">
+        <header>
+            <%if logged_in?%>
+                <div class="logged-in">
+                    <h1>Logged in as: "<%=current_user.user_name%>"</h1>
+                    <form action="/session" method="post">
+                        <input type="hidden" name="_method" value="delete">
+                        <button>Log out</button>
+                    </form>
+                </div>
+                <div class="menu">
+                    <form action="/collection">
+                        <input type="hidden" name="id" value="<%=current_user.id%>">
+                        <button>My collection</button>
+                    </form>
+                    <form action="/trades/<%=current_user.id%>">
+                        <button>My Trades</button>
+                    </form>
+                    <form action="/trades">
+                        <button>View all trades</button>
+                    </form>
+                </div>
+                <div class="browse-collection">
+                    <div class="dropdown">
+                        <button class="dropbtn">Browse other collections:</button>
+                        <div id="myDropdown" class="dropdown-content">
+                            <%users = User.all%>
+                            <%users.each do |user|%>
+                                <%if user.id != current_user.id%>
+                                    <a href="/collection?id=<%=user.id%>"><%=user.user_name%></a>
+                                <%end%>
+                            <%end%>
+                        </div>
+                    </div>
+                </div>
+            <%end%>
+        <script src="/js/dropDownHeader.js"></script>
+        </header>
+        <main>    
+        <%=yield%>
+        </main>
+        <footer>
+
+        </footer>
+    </div>
+</body>
+</html>

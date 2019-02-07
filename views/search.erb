@@ -1,0 +1,56 @@
+<div class="center">
+    <div></div>
+    <div class="search-div">
+        <h1>Search for cards to add to your collection</h1>
+        <form class="search-form" action="/search/results">
+            <input type="text" name="card_name">
+            <button>Search</button>
+        </form>
+        <%if @cards%>
+            <%if @cards[0] == nil%>
+                <%if @searched == true%>
+                    <br>
+                    <p class="no-results">No results found!</p>
+                <%end%>
+            <%end%>
+        <%end%>
+    </div>
+    <div></div>
+</div>
+<div class="list-container">
+    <div>
+    </div>
+    <%if @cards%>
+        <div>
+        <%@cards.each do |card|%>
+            <%if card.multiverse_id != nil%>
+                <div class="card <%=card.image_url%> image-trigger">
+                    <p class="card-name"><%=card.name%> Set: <%=card.set%></p>
+                    <form action="/card/<%=card.multiverse_id%>" method="post">
+                        <input type="hidden" name="name" value="<%=card.name%>">
+                        <input type="hidden" name="edition" value="<%=card.set%>">
+                        <input type="hidden" name="image_url" value="<%=card.image_url%>">
+                        <select name="quantity">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                        <button>Add card</button>
+                    </form>
+                </div>
+            <%end%>
+        <%end%>
+        </div>
+    <%end%>
+    <img src="" alt="" class="cardimage">
+    <div>
+    </div>
+</div>
+<script src="/js/imageHover.js"></script>
