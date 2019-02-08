@@ -1,6 +1,6 @@
 require 'sinatra'
-# require 'sinatra/reloader'
-# require 'pry'
+require 'sinatra/reloader'
+require 'pry'
 require 'active_record'
 require 'mtg_sdk'
 require 'pg'
