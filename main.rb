@@ -23,6 +23,10 @@ helpers do
       false
     end
   end
+
+  def is_admin?
+    session[:is_admin]
+  end
 end
 
 # show the home page
@@ -35,22 +39,41 @@ get '/session/new' do
     erb :login
 end
 
+# go to admin log in page
+get '/session/new/admin' do
+    erb :adminlogin
+end
+
 # log in
 post '/session' do
     user = User.find_by(email: params[:email])
 
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
+      session[:is_admin] = false
       redirect "/collection?id=#{current_user.id}"
     else 
       erb :login
     end
 end
 
+# admin log in
+post '/session/admin' do
+  user = User.find_by(email: params[:email])
+
+  if user && (user.authenticate(params[:password]) && user.is_admin)
+    session[:user_id] = user.id
+    session[:is_admin] = true
+    redirect "/admin"
+  else 
+    erb :adminlogin
+  end
+end
+
 # log out
 delete '/session' do
     session[:user_id] = nil
-    redirect '/session/new'
+    redirect '/'
   end
 
 # show all cards in collection of :id
@@ -95,6 +118,16 @@ post '/card/:multiverse_id' do
   end
 end
 
+# insert imported cards into cards table
+# what to do with multiverse_id??
+post '/cards' do
+  import_list = params[:import_list]
+  import_list.each_line do |line|
+    card = Card.new
+
+  end
+end
+
 # update amount of card in collection
 put '/card/:id/edit' do
   card = Card.find(params[:id])
@@ -117,6 +150,10 @@ delete '/card/:id' do
     card.destroy
     redirect "/collection?id=#{current_user.id}"
   end
+end
+
+get '/cards/import' do
+    erb :import
 end
 
 # show trades of :id
@@ -211,4 +248,54 @@ delete '/trades' do
   trade.destroy
   redirect "/trades/#{current_user.id}"
 end
+
+get '/admin' do
+  @users = User.all
+  erb :admin
+end
+
+# somehow it doesnt update????
+put '/users/:id/edit' do
+  user = User.find(params[:id])
+  user.user_name = params[:user_name]
+  user.email = params[:email]
+  if params[:is_admin] == 'true'
+    is_admin = true
+  else 
+    is_admin = false
+  end
+  user.is_admin = is_admin
+  if params[:password] != ""
+    user.password = params[:password]
+    binding.pry
+  end
+  user.save
+  redirect "/admin"
+end
+
+delete '/users/:id' do
+  user = User.find(params[:id])
+  user.destroy
+  redirect "/admin"
+end
+
+get '/users/new' do
+  erb :new_user
+end
+
+post '/users' do
+  user = User.new
+  user.user_name = params[:user_name]
+  user.email = params[:email]
+  user.password = params[:password]
+  if params[:is_admin] == 'true'
+    is_admin = true
+  else 
+    is_admin = false
+  end
+  user.is_admin = is_admin
+  user.save
+  redirect '/admin'
+end
+
 

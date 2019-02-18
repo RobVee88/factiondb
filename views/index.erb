@@ -17,9 +17,14 @@
 </div>
 <div class="welcome-screen-button">
     <%if !logged_in?%>
-        <form action="/session/new">
-            <button class="login-button">ENTER</button>
-        </form>
+        <div>
+            <form class="login-buttons" action="/session/new">
+                <button class="login-button">ENTER</button>
+            </form>
+            <form class="login-buttons" action="/session/new/admin">
+                <button class="login-button">ADMIN PAGE</button>
+            </form>
+        </div>
     <%end%>
 </div>
 

@@ -16,5 +16,7 @@ window.onclick = function(event) {
 }
 
 dropdown = document.querySelector('.dropbtn');
-dropdown.addEventListener('click', myFunction);
+if(dropdown != null) {
+  dropdown.addEventListener('click', myFunction);
+}
 

@@ -18,36 +18,41 @@
             <%if logged_in?%>
                 <div class="logged-in">
                     <h1>Logged in as: "<%=current_user.user_name%>"</h1>
+                    <%if is_admin?%>
+                        <h1>(Admin)</h1>
+                    <%end%>
                     <form action="/session" method="post">
                         <input type="hidden" name="_method" value="delete">
                         <button>Log out</button>
                     </form>
                 </div>
-                <div class="menu">
-                    <form action="/collection">
-                        <input type="hidden" name="id" value="<%=current_user.id%>">
-                        <button>My collection</button>
-                    </form>
-                    <form action="/trades/<%=current_user.id%>">
-                        <button>My Trades</button>
-                    </form>
-                    <form action="/trades">
-                        <button>View all trades</button>
-                    </form>
-                </div>
-                <div class="browse-collection">
-                    <div class="dropdown">
-                        <button class="dropbtn">Browse other collections:</button>
-                        <div id="myDropdown" class="dropdown-content">
-                            <%users = User.all%>
-                            <%users.each do |user|%>
-                                <%if user.id != current_user.id%>
-                                    <a href="/collection?id=<%=user.id%>"><%=user.user_name%></a>
+                <%if !is_admin?%>
+                    <div class="menu">
+                        <form action="/collection">
+                            <input type="hidden" name="id" value="<%=current_user.id%>">
+                            <button>My collection</button>
+                        </form>
+                        <form action="/trades/<%=current_user.id%>">
+                            <button>My Trades</button>
+                        </form>
+                        <form action="/trades">
+                            <button>View all trades</button>
+                        </form>
+                    </div>
+                    <div class="browse-collection">
+                        <div class="dropdown">
+                            <button class="dropbtn">Browse other collections:</button>
+                            <div id="myDropdown" class="dropdown-content">
+                                <%users = User.all%>
+                                <%users.each do |user|%>
+                                    <%if user.id != current_user.id%>
+                                        <a href="/collection?id=<%=user.id%>"><%=user.user_name%></a>
+                                    <%end%>
                                 <%end%>
-                            <%end%>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <%end%>
             <%end%>
         <script src="/js/dropDownHeader.js"></script>
         </header>

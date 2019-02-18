@@ -1,0 +1,19 @@
+<div class="new-user">
+    <form action="/users" method="post">
+        <label for="name">Name:</label>
+        <input type="text" name="user_name">
+        <label for="password">Password:</label>
+        <input type="password" name="password">
+        <label for="email">Email:</label>
+        <input type="text" name="email">
+        <label for="is_admin">Admin?:</label>
+        <select name="is_admin">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+        <button>Add new user</button>
+    </form>
+    <form action="/admin">
+        <button>Cancel</button>
+    </form>
+</div>

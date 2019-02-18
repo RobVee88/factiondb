@@ -71,6 +71,16 @@ button:hover{
     margin-bottom: 5px;
 }
 
+.admin-user {
+    display: flex;
+    width: 100%;
+    border: solid;
+    border-color: grey;
+    margin-bottom: 5px;
+    font-size: 1em;
+    justify-content: center;
+}
+
 .list-container {
     display: grid;
     grid-template-columns: 0.5fr 3fr 1fr 0.5fr;
@@ -164,6 +174,21 @@ select {
     display: flex;
 }
 
+.login-buttons {
+    justify-content: center;
+}
+.new-user {
+    display: flex;
+    justify-content: center;
+}
+
+.admin-text {
+    text-align: center;
+}
+.add-user-form {
+    display: flex;
+    justify-content: center;
+}
 
 
 /* Fancy dropdown menu from dm */
