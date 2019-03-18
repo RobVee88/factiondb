@@ -92,6 +92,8 @@ button:hover{
 }
 
 header {
+    /* position: fixed;
+    right: 30em; */
     display: flex;
     justify-content: space-between;
     margin-bottom: 3em;
@@ -185,11 +187,17 @@ select {
 .admin-text {
     text-align: center;
 }
-.add-user-form {
+.admin-menu {
     display: flex;
     justify-content: center;
 }
 
+.cardimage {
+    position: fixed;
+    width: 15em;
+    top: 10em;
+    right: 5em;
+}
 
 /* Fancy dropdown menu from dm */
 .dropbtn {

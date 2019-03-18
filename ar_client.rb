@@ -6,6 +6,7 @@ require_relative 'db_config'
 require_relative 'models/card'
 require_relative 'models/user'
 require_relative 'models/trade'
+require_relative 'models/downloaded_card'
 
-binding.pry
+# binding.pry
 

@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader'
-require 'pry'
+# require 'pry'
 require 'active_record'
 require 'mtg_sdk'
 require 'pg'
@@ -8,6 +8,7 @@ require_relative 'db_config'
 require_relative 'models/card'
 require_relative 'models/user'
 require_relative 'models/trade'
+require_relative 'models/downloaded_card'
 
 enable :sessions
 
@@ -98,8 +99,9 @@ get '/search/results' do
 end
 
 # insert card into cards table
-post '/card/:multiverse_id' do
-  if Card.find_by(multiverse_id: params[:multiverse_id], user_id: current_user.id)
+# could find by set name and userid and not worry about multiverse id
+post '/card' do
+  if Card.find_by(name: params[:name], edition: params[:edition], user_id: current_user.id)
     @already_in_db = true
     @user_id = current_user.id
     @cards = Card.where(user_id: current_user.id).reorder('id').all
@@ -107,24 +109,33 @@ post '/card/:multiverse_id' do
     erb :collection
   else
     card = Card.new
-    card.multiverse_id = params[:multiverse_id]
     card.user_id = current_user.id
     card.amount = params[:quantity]
     card.name = params[:name]
     card.edition = params[:edition]
     card.image_url = params[:image_url]
     card.save
+    # binding.pry
     redirect "/collection?id=#{current_user.id}"
   end
 end
 
 # insert imported cards into cards table
-# what to do with multiverse_id??
 post '/cards' do
   import_list = params[:import_list]
   import_list.each_line do |line|
     card = Card.new
-
+    card.user_id = current_user.id
+    card.amount = line.split(' ')[0]
+    results = MTG::Card.where(name: line.split(' ').drop(1).join(' ')).all
+    results.each do |result|
+      if result.multiverse_id != nil
+        card.name = result.name
+        card.edition = result.set
+        card.image_url = result.image_url
+        card.save
+      end
+    end
   end
 end
 
@@ -251,25 +262,23 @@ end
 
 get '/admin' do
   @users = User.all
+  @sets = MTG::Set.all
   erb :admin
 end
 
 # somehow it doesnt update????
 put '/users/:id/edit' do
   user = User.find(params[:id])
-  user.user_name = params[:user_name]
-  user.email = params[:email]
+  user.update_attribute(:user_name, params[:user_name])
+  user.update_attribute(:email, params[:email])
   if params[:is_admin] == 'true'
-    is_admin = true
+    user.update_attribute(:is_admin, true)
   else 
-    is_admin = false
+    user.update_attribute(:is_admin, false)
   end
-  user.is_admin = is_admin
   if params[:password] != ""
-    user.password = params[:password]
-    binding.pry
+    user.update_attribute(:password, params[:password])
   end
-  user.save
   redirect "/admin"
 end
 
@@ -297,5 +306,17 @@ post '/users' do
   user.save
   redirect '/admin'
 end
+
+post '/set' do
+  cards = MTG::Card.where(setName: params[:edition]).all
+  cards.each do |card|
+    dl_card = Downloaded_card.new
+    dl_card.name = card.name
+    dl_card.edition = card.set
+    dl_card.image_url = card.image_url
+    # binding.pry
+  end
+end
+
 
 

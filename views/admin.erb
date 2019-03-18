@@ -1,5 +1,13 @@
 <h1 class="admin-text">ADMIN</h1>
-<div class="add-user-form">
+<div class="admin-menu">
+    <form action="/set" method="post">
+        <select name="edition">
+            <%@sets.each do |set|%>
+                <option value="<%=set.name%>"><%=set.name%></option>
+            <%end%>
+        </select>
+        <button>Import set from API</button>
+    </form>
     <form action="/users/new">
         <button>Add new user</button>
     </form>

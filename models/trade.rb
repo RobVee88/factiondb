@@ -3,4 +3,5 @@ class Trade < ActiveRecord::Base
     validates :user_id_borrower, presence: true
     validates :card_id, presence: true
     validates :amount, presence: true
+    validates :status, presence: true
 end
